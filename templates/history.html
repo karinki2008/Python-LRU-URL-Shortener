@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name = "viewport" content="width=device-width,iitial-scale=1.0">
+    <title>My Short Links</title>
+    <link rel="stylesheet"
+          href="{{url_for('static',filename='style.css')}}">
+</head>
+<body>
+<div class="container">
+    <h1>My Short Links</h1>
+    <p>All your previously generated  short links.</p>
+    {% if urls %}
+        {% for code,original_url in urls%}
+            <div class = "result-box">
+                <h3>Short Code:{{code}}</h3>
+                <p>
+                    Original URL:{{original_url}}
+                </p>
+                <a href="{{url_for('redirect_url',code=code)}}">
+                    Open short link
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>
+            No short links found yet.
+        </p>
+    {% endif %}
+    <br>
+    <a href="{{url_for('home') }}">Back To Home</a>
+</div>
+
+</body>
+</html>

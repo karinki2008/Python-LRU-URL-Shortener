@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>URL Shortener</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="title-icon">🔗</div>
+
+        <h1>URL Shortener</h1>
+
+        <a href="{{ url_for('history') }}" class="history-link">
+    📋 My Short Links
+</a>
+
+        <div class="divider">
+            <span></span>
+            <span class="small-link">🔗</span>
+            <span></span>
+        </div>
+
+        <p>Convert your long URLs into short links</p>
+
+        {% if suspicious %}
+            <div class="warning-message">
+                ⚠️ Warning: This URL contains suspicious keywords.
+                Please check the destination carefully before visiting.
+            </div>
+        {% endif %}
+
+        <!-- URL input form -->
+        <form action="/shorten" method="POST">
+
+            <input
+                type="text"
+                name="original_url"
+                placeholder="Paste your long URL here"
+                required
+            >
+
+            <button type="submit">
+                🔗 &nbsp; Shorten URL
+            </button>
+
+        </form>
+
+        <!-- Display generated short URL -->
+        {% if short_url %}
+
+        <div class="result-box">
+
+            <h3>Your Short Link is Ready!</h3>
+
+            <div class="short-link">
+                <a href="{{ short_url }}" target="_blank">
+                    {{ short_url }}
+                </a>
+            </div>
+
+            <button type="button" onclick="copyLink()">
+                Copy Link
+            </button>
+
+        </div>
+
+        <script>
+            function copyLink() {
+
+                const link = {{ short_url | tojson }};
+
+                navigator.clipboard.writeText(link)
+                    .then(() => {
+                        alert("Short link copied successfully!");
+                    })
+                    .catch(() => {
+                        alert("Unable to copy the link.");
+                    });
+            }
+        </script>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
